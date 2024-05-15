@@ -264,6 +264,7 @@
                   cursor: pointer;
                 "
                 (click)="openDialogField(field)"
+                *ngIf="field.type === 'text' || field.type === 'number'"
               >
                 <i class="fas fa-wrench"></i>
               </div>
@@ -275,6 +276,7 @@
                 cursor: pointer;
               "
               (click)="generarAleatorioRegex(i, iForm)"
+              *ngIf="field.generateRegex"
             >
             <i class="fas fa-random"></i>
             </div>
