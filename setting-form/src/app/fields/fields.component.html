@@ -157,7 +157,7 @@
 
         <!--RECORRIDO DE CAMPOS-->
         <ng-container *ngFor="let field of formModel.listFields; let i = index">
-          <div class="row" cdkDrag>
+          <div class="row" >
             <div class="col-2 field">
               <label for="username">Campo: </label>
               <input
@@ -309,6 +309,12 @@
                   class="fas fa-clone"
                   title="Agregar campo abajo del actual"
                 ></i>
+              </button>
+              <button style="width: 25px; height: 25px;" cdkDrag>
+                <i class="fas fa-expand-arrows-alt"></i>
+                <div *cdkDragPreview>
+                  {{field.name}}
+                </div>
               </button>
             </div>
           </div>
