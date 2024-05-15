@@ -1,0 +1,17 @@
+.btn-save {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    width: 100px;
+    z-index: 2;
+}
+.section-header{
+    display: flex; 
+    background: rgb(40, 99, 175); 
+    color: white; padding: 10px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    .section-title{
+        
+    }
+}

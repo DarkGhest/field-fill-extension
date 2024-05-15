@@ -1,0 +1,32 @@
+{
+  "name": "config-extension",
+  "version": "1.5.0",
+  "description": "",
+  "main": "content.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "del": "rimraf ./compile-extension",
+    "cp-config": "cp-cli src/ compile-extension",
+    "compile-config": "npx webpack --config webpack.config.js",
+    "cp-form": "cp-cli ../fields-fill/dist/fields-fill/browser compile-extension",
+    "cp-popup": "cp-cli ../popup-field-fill/dist/popup-field-fill/browser compile-extension",
+    "build:prod": "npm run del && npm run cp-config && npm run compile-config && npm run cp-form && npm run cp-popup"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^12.0.2",
+    "cp-cli": "^2.0.0",
+    "rimraf": "^5.0.5",
+    "terser-webpack-plugin": "^5.3.10",
+    "tslib": "^2.6.2",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "i": "^0.3.7",
+    "npm": "^10.5.0"
+  }
+}

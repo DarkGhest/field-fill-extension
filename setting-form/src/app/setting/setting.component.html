@@ -1,0 +1,20 @@
+<div style="padding: 20px 0px;">
+
+    <div class="row">
+        <div class="col-6">
+            <label>Lista de propiedades para buscar nombre</label>
+            <input type="text" class="form-control" [(ngModel)]="listAttributes" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" (click)="GuardarListAttributes()">Guardar</button>
+        </div>
+    </div>
+    <div class="row pb-3 pt-3">
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" (click)="import()">Importar</button>
+        </div>
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" (click)="export()">Exportar</button>
+        </div>
+    </div>
+</div>

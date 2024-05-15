@@ -1,0 +1,60 @@
+<div style="padding: 20px 0px;">
+    <div class="row pb-3">
+        <div class="col-3">
+            <button type="button" class="btn btn-primary" (click)="displayForm = true;">Crear Sección</button>
+        </div>
+    </div>
+    <button type="button" class="btn  btn-success btn-save" (click)="save()">Guardar</button>
+    <ng-container *ngIf="displayForm">
+        <hr />
+        <div style="color: rgb(253, 120, 120);" *ngIf="errorForm">
+            No puede estar el nombre vacio
+        </div>
+        <form class="row">
+            <div class="col-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Nombre del seccion:</label>
+                <input type="text" class="form-control" [(ngModel)]="nameForm" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-9"></div>
+            <div class="col-2 pt-3">
+                <button type="button" class="btn btn-primary" (click)="saveForm()">Guardar</button>
+            </div>
+        </form>
+    </ng-container>
+    <hr />
+    <ng-container *ngFor="let domain of listDomains; let iForm = index">
+        <div class="section-header">
+            <div style="width:60%; display: flex; align-items: center;">
+                <i class="fas fa-plus-circle" style="padding-right: 20px; font-size: 20px"
+                    (click)="displaySection(domain)"></i>
+                <div *ngIf="!domain.editName" (dblclick)="domain.editName = true"
+                    style="width: -webkit-fill-available; border-bottom: 1px solid rgb(206, 206, 206);">
+                    {{domain.name}}
+                </div>
+                <input *ngIf="domain.editName" style="width: 200px; display: inline-block;" class="form-control"
+                    id="username" [(ngModel)]="domain.name" aria-describedby="username-help"
+                    (change)="domain.editName = false" (blur)="domain.editName = false"
+                    (focusout)="domain.editName = false" (keydown.enter)="domain.editName = false" />
+            </div>
+            <div style="width: 40%;">
+                <div style="display: flex; gap: 5px; justify-content: flex-end;">
+                    <button style="width: 50px;" type="button" class="btn btn-primary" (click)="deleteForm(iForm)" title="Eliminar sección" ><i
+                            class="fas fa-trash-alt"></i></button>
+                    <button style="width: 50px;" type="button" class="btn btn-primary" (click)="duplicarForm(iForm)" title="Agregar seccion debajo de la actual" ><i
+                            class="fas fa-clone"></i></button>
+                    <button style="width: 50px;" type="button" class="btn btn-primary" (click)="import(iForm)"  title="Importar formularios"><i
+                            class="fas fa-download"></i></button>
+                    <button style="width: 50px;" type="button" class="btn btn-primary" (click)="export(iForm)"  title="Exportar formularios" ><i
+                            class="fas fa-upload"></i></button>
+                </div>
+            </div>
+            <div style="width: auto; padding-left: 20px; text-align: end;">
+                <input [(ngModel)]="domain.enabled" class="form-check-input" type="checkbox" id="flexCheckDefault">
+            </div>
+        </div>
+        <div style="border: 1px solid rgb(176, 176, 176); padding: 10px; border-radius: 8px;"
+            *ngIf="domain.displayForms">
+            <app-fields [listForms]="domain.listForms"></app-fields>
+        </div>
+    </ng-container>
+</div>
