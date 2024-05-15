@@ -1,16 +1,13 @@
 {
-  "name": "config-extension",
+  "name": "content",
   "version": "1.5.0",
   "description": "",
   "main": "content.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "del": "rimraf ./compile-extension",
-    "cp-config": "cp-cli src/ compile-extension",
+    "del": "rimraf ./dist",
+    "cp-config": "cp-cli src/ dist",
     "compile-config": "npx webpack --config webpack.config.js",
-    "cp-form": "cp-cli ../fields-fill/dist/fields-fill/browser compile-extension",
-    "cp-popup": "cp-cli ../popup-field-fill/dist/popup-field-fill/browser compile-extension",
-    "build:prod": "npm run del && npm run cp-config && npm run compile-config && npm run cp-form && npm run cp-popup"
+    "build:prod": "npm run del && npm run cp-config && npm run compile-config"
   },
   "author": "",
   "license": "ISC",

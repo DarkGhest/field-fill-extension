@@ -1,0 +1,19 @@
+{
+  "name": "field-fill-extension",
+  "version": "1.5.0",
+  "description": "llenador de campos",
+  "scripts": {
+    "del": "rimraf ./compile-extension",
+    "cp-setting-form": "cp-cli ./setting-form/dist/fields-fill/browser compile-extension",
+    "cp-popup": "cp-cli ./popup/dist/popup-field-fill/browser compile-extension",
+    "cp-content": "cp-cli ./content/dist compile-extension",
+    "build:prod": "npm run del && npm run cp-content && npm run cp-setting-form && npm run cp-popup"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cp-cli": "^2.0.0",
+    "rimraf": "^5.0.7",
+    "tslib": "^2.6.2"
+  }
+}

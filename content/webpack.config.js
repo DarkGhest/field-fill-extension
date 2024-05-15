@@ -7,7 +7,7 @@ module.exports = {
   entry: getEntryPoints(),
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'compile-extension')
+    path: path.resolve(__dirname, 'dist')
   },
   optimization: {
     minimize: false
