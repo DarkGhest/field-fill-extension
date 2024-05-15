@@ -2,13 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormModel } from '../models/domain.model';
+import { FieldModel, FormModel } from '../models/domain.model';
 import { faker } from '@faker-js/faker';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
+import {Dialog, DialogModule} from '@angular/cdk/dialog';
+import { DialogSettingFieldComponent } from '../dialog-setting-field/dialog-setting-field.component';
 @Component({
   selector: 'app-fields',
   standalone: true,
-  imports: [FormsModule,CommonModule,DragDropModule],
+  imports: [FormsModule,CommonModule,DragDropModule,DialogModule],
   templateUrl: './fields.component.html',
   styleUrl: './fields.component.scss'
 })
@@ -26,7 +28,7 @@ export class FieldsComponent implements OnInit{
     {name: 'sleep', value: 'sleep'},
   ]
   errorForm = false;
-  constructor(private storage: StorageService){}
+  constructor(private storage: StorageService,public dialog: Dialog){}
   ngOnInit(): void {
   }
   saveForm(){
@@ -55,6 +57,18 @@ export class FieldsComponent implements OnInit{
   deleteFields(formModel: FormModel){
     formModel.listFields = [];
   }
+  openDialogField(field: FieldModel): void {
+    const dialogRef = this.dialog.open<string>(DialogSettingFieldComponent, {
+      width: '250px',
+      data: { field},
+    });
+
+    dialogRef.closed.subscribe(result => {
+      if(result){
+        field.generateRegex = result;
+      }
+    });
+  }
   importForm(index: number,formModel: FormModel){
     const value = prompt('ingresa import:');
     const result: any[] = JSON.parse(String(value));
@@ -74,6 +88,12 @@ export class FieldsComponent implements OnInit{
     for(let indexField = 0; indexField < this.listForms[index].listFields.length; indexField++ ){
       this.listForms[index].listFields[indexField].query = result[indexField].query
     }
+  }
+  generarAleatorioRegex(index: number, indexForm: number){
+    const regex =  this.listForms[indexForm].listFields[index].generateRegex!;
+    console.log(regex);
+    const result = faker.helpers.fromRegExp(regex);
+    this.listForms[indexForm].listFields[index].value = result;
   }
   generarAleatorio($event: Event, index: number, indexForm: number){
     const inputElement = $event.target as HTMLInputElement;

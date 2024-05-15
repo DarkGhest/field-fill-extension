@@ -22,7 +22,15 @@ chrome.runtime.onMessage.addListener(async function (
     }
     case "obtener-query": {
       let query = getSelector(document.activeElement);
-      chrome.runtime.sendMessage({ data: JSON.stringify(query) });
+      navigator.clipboard.writeText(query)
+      .then(() => {
+        console.log('Texto copiado al portapapeles')
+        alert('Se ha pegado en el portapales, acceda a modificar formulario para importar lo copiado');
+      })
+      .catch(err => {
+        console.error('Error al copiar al portapapeles:', err)
+        alert('Error al copiar al portapapeles');
+      })
       break;
     }
     case "ejecutarAccion": {

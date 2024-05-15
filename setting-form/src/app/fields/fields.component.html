@@ -1,4 +1,8 @@
-<div style="padding: 20px 0px"  cdkDropList  (cdkDropListDropped)="dropField($event,listForms)">
+<div
+  style="padding: 20px 0px"
+  cdkDropList
+  (cdkDropListDropped)="dropField($event, listForms)"
+>
   <div class="row pb-3">
     <div class="col-3">
       <button
@@ -91,7 +95,7 @@
             style="width: 50px"
             type="button"
             class="btn btn-primary"
-            (click)="importForm(iForm,formModel)"
+            (click)="importForm(iForm, formModel)"
             title="Importar campos"
           >
             <i class="fas fa-download"></i>
@@ -132,7 +136,8 @@
         border-radius: 8px;
       "
       *ngIf="formModel.displayForms"
-      cdkDropList  (cdkDropListDropped)="dropField($event,formModel.listFields)"
+      cdkDropList
+      (cdkDropListDropped)="dropField($event, formModel.listFields)"
     >
       <div class="row">
         <div class="col-10"></div>
@@ -149,142 +154,164 @@
             ></i>
           </button>
         </div>
-        
+
         <!--RECORRIDO DE CAMPOS-->
         <ng-container *ngFor="let field of formModel.listFields; let i = index">
-          <div class="row" cdkDrag>   <div class="col-2 field" >
-            <label for="username">Campo: </label>
-            <input
-              class="form-control"
-              id="username"
-              [(ngModel)]="field.name"
-              aria-describedby="username-help"
-            />
-          </div>
-          <div class="col-1 field">
-            <label for="username">Tipo: </label>
-            <select
-              style="
-                width: 100%;
-                border-radius: 5px;
-                padding: 6px;
-                border-color: #d9d9d9;
-              "
-              [(ngModel)]="field.type"
-            >
-              <option
-                [value]="option.value"
-                *ngFor="let option of types"
-                (click)="changeOptionValue(field, option.value)"
+          <div class="row" cdkDrag>
+            <div class="col-2 field">
+              <label for="username">Campo: </label>
+              <input
+                class="form-control"
+                id="username"
+                [(ngModel)]="field.name"
+                aria-describedby="username-help"
+              />
+            </div>
+            <div class="col-1 field">
+              <label for="username">Tipo: </label>
+              <select
+                style="
+                  width: 100%;
+                  border-radius: 5px;
+                  padding: 6px;
+                  border-color: #d9d9d9;
+                "
+                [(ngModel)]="field.type"
               >
-                <a class="dropdown-item" href="#">{{ option.name }}</a>
-              </option>
-            </select>
-          </div>
-          <div class="col-3 field">
-            <label for="username">valor: </label>
-            <ng-container [ngSwitch]="field.type">
-              <ng-container *ngSwitchCase="'checkbox'">
-                <input
-                  type="checkbox"
-                  class="form-control input-normal"
-                  id="username"
-                  [(ngModel)]="field.value"
-                  aria-describedby="username-help"
-                />
-              </ng-container>
-              <ng-container *ngSwitchCase="'radio'">
-                <input
-                  type="checkbox"
-                  class="form-control input-normal"
-                  id="username"
-                  [(ngModel)]="field.value"
-                  aria-describedby="username-help"
-                />
-              </ng-container>
-              <ng-container *ngSwitchCase="'number'">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="username"
-                  [(ngModel)]="field.value"
-                  aria-describedby="username-help"
-                />
-              </ng-container>
-              <ng-container *ngSwitchCase="'sleep'">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="username"
-                  [(ngModel)]="field.value"
-                  aria-describedby="username-help"
-                />
-              </ng-container>
-              <ng-container *ngSwitchCase="'date'">
-                <input
-                  type="date"
-                  class="form-control"
-                  id="username"
-                  [(ngModel)]="field.value"
-                  aria-describedby="username-help"
-                />
-              </ng-container>
-              <ng-container *ngSwitchDefault>
-                <div style="display: flex">
+                <option
+                  [value]="option.value"
+                  *ngFor="let option of types"
+                  (click)="changeOptionValue(field, option.value)"
+                >
+                  <a class="dropdown-item" href="#">{{ option.name }}</a>
+                </option>
+              </select>
+            </div>
+            <div class="col-3 field" style="position: relative">
+              <label for="username">valor: </label>
+              <ng-container [ngSwitch]="field.type">
+                <ng-container *ngSwitchCase="'checkbox'">
                   <input
-                    style="width: calc(100% - 50px)"
+                    type="checkbox"
+                    class="form-control input-normal"
+                    id="username"
+                    [(ngModel)]="field.value"
+                    aria-describedby="username-help"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="'radio'">
+                  <input
+                    type="checkbox"
+                    class="form-control input-normal"
+                    id="username"
+                    [(ngModel)]="field.value"
+                    aria-describedby="username-help"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="'number'">
+                  <input
+                    type="number"
                     class="form-control"
                     id="username"
                     [(ngModel)]="field.value"
                     aria-describedby="username-help"
-                    (input)="generarAleatorio($event, i, iForm)"
-                    autocomplete="off"
-                    list="frutasList"
                   />
-                  <datalist id="frutasList">
-                    <option value="generar_nombre"></option>
-                    <option value="generar_apellido"></option>
-                    <option value="generar_correo"></option>
-                    <option value="generar_telefono"></option>
-                  </datalist>
-                </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'sleep'">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="username"
+                    [(ngModel)]="field.value"
+                    aria-describedby="username-help"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchCase="'date'">
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="username"
+                    [(ngModel)]="field.value"
+                    aria-describedby="username-help"
+                  />
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <div style="display: flex">
+                    <input
+                      style="width: calc(100% - 50px)"
+                      class="form-control"
+                      id="username"
+                      [(ngModel)]="field.value"
+                      aria-describedby="username-help"
+                      (input)="generarAleatorio($event, i, iForm)"
+                      autocomplete="off"
+                      list="frutasList"
+                    />
+                    <datalist id="frutasList">
+                      <option value="generar_nombre"></option>
+                      <option value="generar_apellido"></option>
+                      <option value="generar_correo"></option>
+                      <option value="generar_telefono"></option>
+                    </datalist>
+                  </div>
+                </ng-container>
               </ng-container>
-            </ng-container>
-          </div>
-          <div class="col-4 field">
-            <label for="username">query: </label>
-            <input
-              class="form-control"
-              [(ngModel)]="field.query"
-              id="username"
-              aria-describedby="username-help"
-            />
-          </div>
-          <div class="col-2">
-            <label style="display: block">Acciones</label>
-            <button
-              style="width: 50px; margin-right: 5px"
-              type="button"
-              class="btn btn-primary"
-              (click)="deleteField(formModel, i)"
-              title="Eliminar campo"
+              <div
+                style="
+                  position: absolute;
+                  top: 0px;
+                  left: 60px;
+                  cursor: pointer;
+                "
+                (click)="openDialogField(field)"
+              >
+                <i class="fas fa-wrench"></i>
+              </div>
+              <div
+              style="
+                position: absolute;
+                top: 0px;
+                left: 85px;
+                cursor: pointer;
+              "
+              (click)="generarAleatorioRegex(i, iForm)"
             >
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button
-              style="width: 50px"
-              type="button"
-              class="btn btn-primary"
-              (click)="duplicar(formModel, i, field)"
-            >
-              <i
-                class="fas fa-clone"
-                title="Agregar campo abajo del actual"
-              ></i>
-            </button>
+            <i class="fas fa-random"></i>
+            </div>
+            </div>
+            <div class="col-4 field">
+              <label for="username">query: </label>
+              <input
+                class="form-control"
+                [(ngModel)]="field.query"
+                id="username"
+                aria-describedby="username-help"
+              />
+            </div>
+            <div class="col-2">
+              <label style="display: block">Acciones</label>
+              <button
+                style="width: 50px; margin-right: 5px"
+                type="button"
+                class="btn btn-primary"
+                (click)="deleteField(formModel, i)"
+                title="Eliminar campo"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button
+                style="width: 50px"
+                type="button"
+                class="btn btn-primary"
+                (click)="duplicar(formModel, i, field)"
+              >
+                <i
+                  class="fas fa-clone"
+                  title="Agregar campo abajo del actual"
+                ></i>
+              </button>
+            </div>
           </div>
-          </div>
-       
         </ng-container>
         <div class="col-12"></div>
         <div class="col-3 pt-3">
