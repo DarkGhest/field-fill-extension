@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -31,19 +31,8 @@ export class FieldsComponent implements OnInit{
   ]
   errorForm = false;
   constructor(private storage: StorageService,public dialog: Dialog){}
+
   ngOnInit(): void {
-  }
-  saveForm(){
-    if(!this.nameForm){
-      this.errorForm = true;
-      return;
-    }
-    const formModel = new FormModel();
-    formModel.name = this.nameForm;
-    this.listForms.push(formModel);
-    this.displayForm = false;
-    this.nameForm = '';
-    this.errorForm = false;
   }
   addField(formModel: FormModel){
     formModel.listFields.push({

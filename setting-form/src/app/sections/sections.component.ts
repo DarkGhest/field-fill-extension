@@ -1,10 +1,9 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, OnChanges, OnInit } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DomainModel } from '../models/domain.model';
 import { KeyStorage } from '../models/key-storage.enum';
-import { FieldsComponent } from '../fields/fields.component';
 import { FormsComponent } from '../forms/forms.component';
 
 @Component({
@@ -14,7 +13,7 @@ import { FormsComponent } from '../forms/forms.component';
   templateUrl: './sections.component.html',
   styleUrl: './sections.component.scss'
 })
-export class SectionsComponent implements OnInit{
+export class SectionsComponent implements OnInit, OnChanges{
   displayForm = false;
   nameForm = '';
   listDomains: DomainModel[] = [];
@@ -23,6 +22,11 @@ export class SectionsComponent implements OnInit{
 
   ngOnInit(): void {
     this.getData();
+  }
+  ngOnChanges(changes: any) {
+    if (changes.listDomains) {
+      console.log('El arreglo ha cambiado');
+    }
   }
   async getData(){
     const data = await this.storage.get(KeyStorage.listDomains)
