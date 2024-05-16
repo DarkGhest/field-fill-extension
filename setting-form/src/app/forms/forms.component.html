@@ -1,0 +1,174 @@
+<div
+  style="padding: 20px 0px"
+  cdkDropList
+  (cdkDropListDropped)="dropField($event, listForms)"
+>
+  <div class="row pb-3">
+    <div class="col-3">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="displayForm = true"
+      >
+        Crear formulario
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="displayForm">
+    <hr />
+    <div style="color: rgb(253, 120, 120)" *ngIf="errorForm">
+      No puede estar el nombre vacio
+    </div>
+    <form class="row">
+      <div class="col-3">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Nombre formulario:</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="nameForm"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+      <div class="col-9"></div>
+      <div class="col-2 pt-3">
+        <button type="button" class="btn btn-primary" (click)="saveForm()">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </ng-container>
+  <hr />
+  <!--RECORRIDO DE FORMULARIOS-->
+  <ng-container *ngFor="let formModel of listForms; let iForm = index">
+    <div class="section-header" cdkDrag>
+      <div style="width: 60%; display: flex; align-items: center">
+        <i
+          class="far fa-plus-square"
+          style="padding-right: 20px; font-size: 18px"
+          (click)="formModel.displayForms = !formModel.displayForms"
+          (keypress)="formModel.displayForms = !formModel.displayForms"
+        ></i>
+        <div
+          *ngIf="!formModel.editName"
+          (dblclick)="formModel.editName = true"
+          style="
+            width: -webkit-fill-available;
+            border-bottom: 1px solid rgb(206, 206, 206);
+          "
+        >
+          {{ formModel.name }}
+        </div>
+        <input
+          *ngIf="formModel.editName"
+          style="width: 200px; display: inline-block"
+          class="form-control"
+          id="username"
+          [(ngModel)]="formModel.name"
+          aria-describedby="username-help"
+          (change)="formModel.editName = false"
+          (focusout)="formModel.editName = false"
+          (keydown.enter)="formModel.editName = false"
+        />
+      </div>
+      <div style="width: 40%">
+        <div style="display: flex; gap: 5px; justify-content: flex-end">
+          <button
+            style="width: 50px"
+            type="button"
+            class="btn btn-primary"
+            (click)="deleteForm(iForm)"
+            title="Eliminar Formulario"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button
+            style="width: 50px"
+            type="button"
+            class="btn btn-primary"
+            (click)="duplicarForm(iForm)"
+            title="Agregar un formulario abajo del actual"
+          >
+            <i class="fas fa-clone"></i>
+          </button>
+          <button
+            style="width: 50px"
+            type="button"
+            class="btn btn-primary"
+            (click)="importForm(iForm, formModel)"
+            title="Importar campos"
+          >
+            <i class="fas fa-download"></i>
+          </button>
+          <button
+            style="width: 50px"
+            type="button"
+            class="btn btn-primary"
+            (click)="update(iForm)"
+            title="Actualizar query de campos"
+          >
+            <i class="fas fa-wrench"></i>
+          </button>
+          <button
+            style="width: 50px"
+            type="button"
+            class="btn btn-primary"
+            (click)="export(iForm)"
+            title="Exportar campos"
+          >
+            <i class="fas fa-upload"></i>
+          </button>
+        </div>
+      </div>
+      <div style="width: auto; padding-left: 20px; text-align: end">
+        <input
+          [(ngModel)]="formModel.enabled"
+          class="form-check-input"
+          type="checkbox"
+          id="flexCheckDefault"
+        />
+      </div>
+    </div>
+    <div
+      style="
+        border: 1px solid rgb(176, 176, 176);
+        padding: 10px;
+        border-radius: 8px;
+      "
+      *ngIf="formModel.displayForms"
+      cdkDropList
+      (cdkDropListDropped)="dropField($event, formModel.listFields)"
+    >
+      <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2" *ngIf="formModel.listFields.length > 0">
+          <button
+            style="width: 50px; margin-right: 5px"
+            type="button"
+            class="btn btn-primary"
+            (click)="deleteFields(formModel)"
+          >
+            <i
+              class="fas fa-trash-alt"
+              title="Eliminar todos los campos del formulario"
+            ></i>
+          </button>
+        </div>
+
+        <!--RECORRIDO DE CAMPOS-->
+        <app-fields [iForm]="iForm" [formModel]="formModel"></app-fields>
+        <div class="col-12"></div>
+        <div class="col-3 pt-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="addField(formModel)"
+          >
+            Agregar campo
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

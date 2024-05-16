@@ -34,8 +34,14 @@ chrome.runtime.onMessage.addListener(async function (
       break;
     }
     case "ejecutarAccion": {
+      let anterior = '';
       for (const dato of datos) {
-        await sendCharacter(dato.query, dato.value, dato.type);
+        let value = dato.value;
+        if(dato.value == '<anterior>'){
+          value = anterior;
+        }
+        await sendCharacter(dato.query, value, dato.type);
+        anterior = dato.value;
       }
       break;
     }

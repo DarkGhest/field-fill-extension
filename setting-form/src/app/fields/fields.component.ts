@@ -15,6 +15,8 @@ import { DialogSettingFieldComponent } from '../dialog-setting-field/dialog-sett
   styleUrl: './fields.component.scss'
 })
 export class FieldsComponent implements OnInit{
+  @Input() formModel!: FormModel;
+  @Input() iForm!: number;
   displayForm = false;
   nameForm = '';
   @Input() listForms: FormModel[] = [];

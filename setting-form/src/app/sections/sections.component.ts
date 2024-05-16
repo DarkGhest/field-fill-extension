@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DomainModel } from '../models/domain.model';
 import { KeyStorage } from '../models/key-storage.enum';
 import { FieldsComponent } from '../fields/fields.component';
+import { FormsComponent } from '../forms/forms.component';
 
 @Component({
   selector: 'app-sections',
   standalone: true,
-  imports: [FormsModule,CommonModule,FieldsComponent],
+  imports: [FormsModule,CommonModule,FormsComponent],
   templateUrl: './sections.component.html',
   styleUrl: './sections.component.scss'
 })
@@ -19,6 +20,7 @@ export class SectionsComponent implements OnInit{
   listDomains: DomainModel[] = [];
   errorForm = false;
   constructor(private storage: StorageService){}
+
   ngOnInit(): void {
     this.getData();
   }
