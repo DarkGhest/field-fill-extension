@@ -1,7 +1,7 @@
 <!--RECORRIDO DE CAMPOS-->
 <ng-container *ngFor="let field of formModel.listFields; let i = index">
-  <div class="row">
-    <div class="col-2 field">
+  <div class="row" [class.favorite]="field.favorite">
+    <div class="col-2 field" style="position: relative">
       <label for="username">Campo: </label>
       <input
         class="form-control"
@@ -9,6 +9,13 @@
         [(ngModel)]="field.name"
         aria-describedby="username-help"
       />
+      <div 
+        style="position: absolute; top: 0px; left: 70px; cursor: pointer"
+        (click)="field.favorite = !field.favorite"
+      >
+        <i class="far fa-star" *ngIf="!field.favorite"></i>
+        <i class="fas fa-star" *ngIf="field.favorite"></i>
+      </div>
     </div>
     <div class="col-1 field">
       <label for="username">Tipo: </label>
@@ -142,12 +149,11 @@
       >
         <i class="fas fa-clone" title="Agregar campo abajo del actual"></i>
       </button>
-      <button  style="width: 50px"
-      class="btn btn-primary" cdkDrag>
+      <button style="width: 50px" class="btn btn-primary" cdkDrag>
         <i class="fas fa-expand-arrows-alt"></i>
         <div *cdkDragPreview>
           {{ field.name }}
-          <hr>
+          <hr />
         </div>
       </button>
     </div>

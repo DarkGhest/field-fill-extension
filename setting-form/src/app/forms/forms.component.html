@@ -42,14 +42,15 @@
   <hr />
   <!--RECORRIDO DE FORMULARIOS-->
   <ng-container *ngFor="let formModel of listForms; let iForm = index">
-    <div class="section-header" cdkDrag>
+    <div class="section-header" [class.disabled]="!formModel.enabled" >
       <div style="width: 60%; display: flex; align-items: center">
         <i
-          class="far fa-plus-square"
+          [class]=" formModel.displayForms ? 'fas fa-caret-square-down': 'fas fa-caret-square-right' "
           style="padding-right: 20px; font-size: 18px"
           (click)="formModel.displayForms = !formModel.displayForms"
           (keypress)="formModel.displayForms = !formModel.displayForms"
         ></i>
+
         <div
           *ngIf="!formModel.editName"
           (dblclick)="formModel.editName = true"
@@ -119,6 +120,13 @@
           >
             <i class="fas fa-upload"></i>
           </button>
+          <button style="width: 50px" class="btn btn-primary" cdkDrag>
+            <i class="fas fa-expand-arrows-alt"></i>
+            <div *cdkDragPreview>
+              {{ formModel.name }}
+              <hr />
+            </div>
+          </button>
         </div>
       </div>
       <div style="width: auto; padding-left: 20px; text-align: end">
@@ -157,7 +165,11 @@
         </div>
 
         <!--RECORRIDO DE CAMPOS-->
-        <app-fields [iForm]="iForm" [formModel]="formModel"  [listForms]="listForms"></app-fields>
+        <app-fields
+          [iForm]="iForm"
+          [formModel]="formModel"
+          [listForms]="listForms"
+        ></app-fields>
         <div class="col-12"></div>
         <div class="col-3 pt-3">
           <button

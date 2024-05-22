@@ -1,0 +1,3 @@
+- (completado)Cuando de desactive una seccion se opaque toda la seccion y no funcione ningun evento.
+- (completado)agregar boton de estrellita a cada campo para que salgan resaltados.
+- (completado)quitar el evento de drag and drop de la seccion ya que al seleccionar el texto se mueve el componente y ponerlo como un boton de mover a la derecha en la parte de la seccion.

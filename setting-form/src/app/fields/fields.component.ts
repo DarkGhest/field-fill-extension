@@ -38,6 +38,7 @@ export class FieldsComponent implements OnInit{
     formModel.listFields.push({
       query: '',
       value: '',
+      favorite: false,
       type: 'text',
       name: 'campo-'+ (formModel.listFields.length + 1),
     })
@@ -67,6 +68,7 @@ export class FieldsComponent implements OnInit{
       this.listForms[index].listFields.push({
         name: field.name,
         query: field.query,
+        favorite: false,
         type: field.type,
         value: field.value
       })
@@ -136,6 +138,7 @@ export class FieldsComponent implements OnInit{
     formModel.listFields.splice( index + 1, 0,{
       query: '',
       value: '',
+      favorite: false,
       type: 'text',
       name: 'campo-'+ (formModel.listFields.length + 1),
     })

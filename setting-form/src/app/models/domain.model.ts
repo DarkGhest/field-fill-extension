@@ -14,6 +14,7 @@ export class FormModel {
 }
 export class FieldModel {
   generateRegex?: string = '';
+  favorite: boolean = false;
   name: string = '';
   value: string = '';
   query: string = '';
