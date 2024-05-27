@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting/setting.component';
 import { SectionsComponent } from './sections/sections.component';
@@ -10,9 +10,7 @@ import { SectionsComponent } from './sections/sections.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   constructor(){}
-  ngOnInit(): void {
-  }
   
 }

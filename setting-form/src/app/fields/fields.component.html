@@ -1,6 +1,14 @@
 <!--RECORRIDO DE CAMPOS-->
 <ng-container *ngFor="let field of formModel.listFields; let i = index">
-  <div class="row" [class.favorite]="field.favorite">
+  <div class="row" [class.favorite]="field.favorite" style="padding-bottom: 10px;">
+    <div class="col-auto" style="padding-top: 20px;" cdkDrag>
+      <button style="width: 50px" class="btn btn-primary" >
+        <i class="fas fa-expand-arrows-alt"></i>
+      </button>
+      <div class="example-custom-placeholder"  *cdkDragPreview > 
+        {{field.name}}
+      </div>
+    </div>
     <div class="col-2 field" style="position: relative">
       <label for="username">Campo: </label>
       <input
@@ -121,7 +129,7 @@
         <i class="fas fa-random"></i>
       </div>
     </div>
-    <div class="col-4 field">
+    <div class="col-3 field">
       <label for="username">query: </label>
       <input
         class="form-control"
@@ -130,7 +138,7 @@
         aria-describedby="username-help"
       />
     </div>
-    <div class="col-2">
+    <div class="col">
       <div>Acciones</div>
       <button
         style="width: 50px; margin-right: 5px"
@@ -148,13 +156,6 @@
         (click)="duplicar(formModel, i, field)"
       >
         <i class="fas fa-clone" title="Agregar campo abajo del actual"></i>
-      </button>
-      <button style="width: 50px" class="btn btn-primary" cdkDrag>
-        <i class="fas fa-expand-arrows-alt"></i>
-        <div *cdkDragPreview>
-          {{ field.name }}
-          <hr />
-        </div>
       </button>
     </div>
   </div>
