@@ -7,7 +7,7 @@
     "del": "rimraf ./dist",
     "cp-config": "cp-cli src/ dist",
     "compile-config": "npx webpack --config webpack.config.js",
-    "build:prod": "npm run del && npm run cp-config && npm run compile-config"
+    "build": "npm run del && npm run cp-config && npm run compile-config"
   },
   "author": "",
   "license": "ISC",

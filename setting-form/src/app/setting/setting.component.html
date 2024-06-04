@@ -17,4 +17,11 @@
             <button type="button" class="btn btn-primary" (click)="export()">Exportar</button>
         </div>
     </div>
+    <div class="row">
+        <div>
+            <label>Ingresa la ruta</label>
+            <input type="text" [(ngModel)]="path">
+        </div>
+        <button (click)="test()">prueba escritura</button>
+    </div>
 </div>

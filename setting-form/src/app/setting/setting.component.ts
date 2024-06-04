@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +13,7 @@ import { KeyStorage } from '../models/key-storage.enum';
   styleUrl: './setting.component.scss'
 })
 export class SettingComponent {
-
+  path = './';
   listAttributes = "label,p";
   constructor(private storage: StorageService) { }
   GuardarListAttributes() {
@@ -39,5 +40,8 @@ export class SettingComponent {
     document.body.appendChild(elemento);
     elemento.click();
     document.body.removeChild(elemento);
+  }
+  test(){
+    this.storage.test();
   }
 }
