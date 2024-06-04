@@ -22,7 +22,7 @@
         </form>
     </ng-container>
     <hr />
-    <ng-container *ngFor="let domain of listDomains; let iForm = index">
+    <ng-container *ngFor="let domain of  this.sectionService.listDomains; let iForm = index">
         <div class="section-header">
             <div style="width:60%; display: flex; align-items: center;">
                 <i class="fas fa-plus-circle" style="padding-right: 20px; font-size: 20px"
@@ -54,7 +54,7 @@
         </div>
         <div style="border: 1px solid rgb(176, 176, 176); padding: 10px; border-radius: 8px;"
             *ngIf="domain.displayForms">
-            <app-forms [listForms]="domain.listForms"></app-forms>
+            <app-forms [listForms]="domain.listForms" [iSection]="iForm"></app-forms>
         </div>
     </ng-container>
 </div>

@@ -1,0 +1,13 @@
+
+<button type="button" class="btn  btn-success" (click)="generate()">Generar</button>
+<ng-container
+  *ngFor="let domain of this.sectionService.listDomains; let iSection = index"
+>
+  <ng-container *ngFor="let formModel of domain.listForms; let iForm = index">
+    <ng-container *ngFor="let field of formModel.listFields; let iField = index">
+      <app-field  *ngIf="field.favorite" [field]="field" [i]="iField" [formModel]="formModel" [iForm]="iForm" [iSection]="iSection" [listForms]="domain.listForms" ></app-field>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<button type="button" class="btn  btn-success btn-save" (click)="save()">Guardar</button>

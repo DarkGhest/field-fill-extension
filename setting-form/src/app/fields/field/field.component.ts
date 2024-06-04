@@ -1,36 +1,30 @@
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
-import {
-  CdkDragDrop,
-  DragDropModule,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit } from '@angular/core';
-import { faker } from '@faker-js/faker';
-import { DialogSettingFieldComponent } from '../dialog-setting-field/dialog-setting-field.component';
-import { FormModel, FieldModel } from '../models/domain.model';
-import { StorageService } from '../storage.service';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FieldsComponent } from '../fields/fields.component';
+import { faker } from '@faker-js/faker';
+import { DialogSettingFieldComponent } from '../../dialog-setting-field/dialog-setting-field.component';
+import { FormModel, FieldModel } from '../../models/domain.model';
+import { SectionsService } from '../../sections.service';
+import { StorageService } from '../../storage.service';
 
 @Component({
-  selector: 'app-forms',
+  selector: 'app-field',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    DragDropModule,
-    DialogModule,
-    FieldsComponent,
-  ],
-  templateUrl: './forms.component.html',
-  styleUrl: './forms.component.scss',
+  imports: [FormsModule, CommonModule, DragDropModule, DialogModule],
+  templateUrl: './field.component.html',
+  styleUrl: './field.component.scss'
 })
-export class FormsComponent implements OnInit {
+export class FieldComponent {
+  @Input() formModel!: FormModel;
+  @Input() field!: FieldModel;
+  @Input() iForm!: number;
+  @Input() i!: number;
+  @Input() iSection!: number;
   displayForm = false;
   nameForm = '';
   @Input() listForms: FormModel[] = [];
-  @Input() iSection: number = -1;
   types = [
     { name: 'text', value: 'text' },
     { name: 'click', value: 'click' },
@@ -41,20 +35,9 @@ export class FormsComponent implements OnInit {
     { name: 'sleep', value: 'sleep' },
   ];
   errorForm = false;
-  constructor(private storage: StorageService, public dialog: Dialog) {}
+  constructor(private storage: StorageService, public dialog: Dialog, private sectionsService: SectionsService) {}
+
   ngOnInit(): void {}
-  saveForm() {
-    if (!this.nameForm) {
-      this.errorForm = true;
-      return;
-    }
-    const formModel = new FormModel();
-    formModel.name = this.nameForm;
-    this.listForms.push(formModel);
-    this.displayForm = false;
-    this.nameForm = '';
-    this.errorForm = false;
-  }
   addField(formModel: FormModel) {
     formModel.listFields.push({
       query: '',
@@ -64,8 +47,23 @@ export class FormsComponent implements OnInit {
       name: 'campo-' + (formModel.listFields.length + 1),
     });
   }
+  deleteField(formModel: FormModel, index: number) {
+    formModel.listFields.splice(index, 1);
+  }
   deleteFields(formModel: FormModel) {
     formModel.listFields = [];
+  }
+  openDialogField(field: FieldModel): void {
+    const dialogRef = this.dialog.open<string>(DialogSettingFieldComponent, {
+      width: '250px',
+      data: { field },
+    });
+
+    dialogRef.closed.subscribe((result) => {
+      if (result) {
+        field.generateRegex = result;
+      }
+    });
   }
   importForm(index: number, formModel: FormModel) {
     const value = prompt('ingresa import:');
@@ -74,9 +72,9 @@ export class FormsComponent implements OnInit {
       this.listForms[index].listFields.push({
         name: field.name,
         query: field.query,
+        favorite: false,
         type: field.type,
         value: field.value,
-        favorite: false
       });
     }
     formModel.displayForms = true;
@@ -93,11 +91,22 @@ export class FormsComponent implements OnInit {
         result[indexField].query;
     }
   }
-  generarAleatorioRegex(index: number, indexForm: number) {
-    const regex = this.listForms[indexForm].listFields[index].generateRegex!;
-    console.log(regex);
+  verificarSubstring(valor: string) {
+    const positionStart = valor.search('<-s');
+    const positionEnd = valor.search('s->');
+    if(positionStart == -1) return valor;
+    if(positionEnd == -1) return valor;
+    const result = valor.substring(positionStart + 3, positionEnd);
+    const array = result.split('|');
+    const getValue = this.sectionsService.listDomains[Number(array[0])].listForms[Number(array[1])].listFields[Number(array[2])].value.substring(Number(array[3]),Number(array[4]));
+    valor = valor.replace('<-s'+result+'s->',getValue);
+    return valor;
+  }
+  generarAleatorioRegex(index: number) {
+    let regex = this.field.generateRegex!;
+    regex = this.verificarSubstring(regex);
     const result = faker.helpers.fromRegExp(regex);
-    this.listForms[indexForm].listFields[index].value = result;
+    this.field.value = result;
   }
   generarAleatorio($event: Event, index: number, indexForm: number) {
     const inputElement = $event.target as HTMLInputElement;
@@ -162,6 +171,9 @@ export class FormsComponent implements OnInit {
   }
   deleteForm(index: number) {
     this.listForms.splice(index, 1);
+  }
+  changeOptionValue(item: any, value: any) {
+    item.type = value;
   }
   dropField(event: CdkDragDrop<string[]>, array: any[]) {
     moveItemInArray(array, event.previousIndex, event.currentIndex);
