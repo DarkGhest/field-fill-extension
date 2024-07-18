@@ -1,4 +1,4 @@
-let listAttributes = "formcontrolname,type,id,ng-reflect-name,ng-reflect-value";
+let listAttributes = "label,p,formcontrolname,type,id,ng-reflect-name,ng-reflect-value,select,input, textarea";
 // Este script se ejecuta en el contexto de la página web actual
 console.log("Ejecutando extension FIELD-FILL");
 chrome.storage.local.get("listAttributes", function (result) {
@@ -22,22 +22,25 @@ chrome.runtime.onMessage.addListener(async function (
     }
     case "obtener-query": {
       let query = getSelector(document.activeElement);
-      navigator.clipboard.writeText(query)
-      .then(() => {
-        console.log('Texto copiado al portapapeles')
-        alert('Se ha pegado en el portapales, acceda a modificar formulario para importar lo copiado');
-      })
-      .catch(err => {
-        console.error('Error al copiar al portapapeles:', err)
-        alert('Error al copiar al portapapeles');
-      })
+      navigator.clipboard
+        .writeText(query)
+        .then(() => {
+          console.log("Texto copiado al portapapeles");
+          alert(
+            "Se ha pegado en el portapales, acceda a modificar formulario para importar lo copiado"
+          );
+        })
+        .catch((err) => {
+          console.error("Error al copiar al portapapeles:", err);
+          alert("Error al copiar al portapapeles");
+        });
       break;
     }
     case "ejecutarAccion": {
-      let anterior = '';
+      let anterior = "";
       for (const dato of datos) {
         let value = dato.value;
-        if(dato.value == '<anterior>'){
+        if (dato.value == "<anterior>") {
           value = anterior;
         }
         await sendCharacter(dato.query, value, dato.type);
@@ -55,7 +58,7 @@ chrome.runtime.onMessage.addListener(async function (
 
         // Obtener todos los elementos de tipo input dentro del formulario
         const form = document.querySelector("body");
-        const inputs = form.querySelectorAll("input, textarea, select");
+        const inputs = form.querySelectorAll(listAttributes);
 
         // Recorrer los elementos y obtener el selector de consulta
         const listFields = [];
@@ -97,13 +100,15 @@ chrome.runtime.onMessage.addListener(async function (
           console.log(
             `Selector para el input ${input.name}: ${selector.selector}`
           );
-          if(selector.type === 'select' ){
+          if (selector.type === "select") {
             listFields.push({
-                name: selector.name ? selector.name : "esperar_campo_" + listFields.length,
-                query: "",
-                type: "sleep",
-                value: 750,
-              });
+              name: selector.name
+                ? selector.name
+                : "esperar_campo_" + listFields.length,
+              query: "",
+              type: "sleep",
+              value: 750,
+            });
           }
           listFields.push({
             name: selector.name ? selector.name : "campo_" + listFields.length,
@@ -290,11 +295,11 @@ function getAtributes(element) {
 }
 
 async function selectOptionByText(selectElement, searchText) {
-  await sleep(500);
+  await sleep(1000);
   selectElement.click();
   selectElement.dispatchEvent(new Event("click"));
   selectElement.dispatchEvent(new Event("mousedown"));
-
+  await sleep(500);
   const blurEvent2 = new Event("blur", { bubbles: true });
   selectElement.dispatchEvent(blurEvent2);
   const options = selectElement.options;
@@ -306,12 +311,12 @@ async function selectOptionByText(selectElement, searchText) {
       // Simular evento de cambio
       option.dispatchEvent(new Event("change"));
 
+      const blurEvent = new Event("blur", { bubbles: true });
+      option.dispatchEvent(blurEvent);
       // Dispatch events related to selection
       const inputEvent = new Event("input", { bubbles: true });
       option.dispatchEvent(inputEvent);
 
-      const blurEvent = new Event("blur", { bubbles: true });
-      option.dispatchEvent(blurEvent);
       break;
     }
   }

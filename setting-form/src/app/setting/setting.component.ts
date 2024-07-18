@@ -14,7 +14,7 @@ import { KeyStorage } from '../models/key-storage.enum';
 })
 export class SettingComponent {
   path = './';
-  listAttributes = "label,p";
+  listAttributes = "label,p,formcontrolname,type,id,ng-reflect-name,ng-reflect-value,select,input, textarea";
   constructor(private storage: StorageService) { }
   GuardarListAttributes() {
     this.storage.set('listAttributes', this.listAttributes);
