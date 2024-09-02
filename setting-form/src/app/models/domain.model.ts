@@ -18,6 +18,6 @@ export class FieldModel {
   name: string = '';
   value: string = '';
   query: string = '';
-  type: 'text' | 'click' | 'date' | 'select' | 'radio' | 'checkbox' | 'sleep' | 'number' =
+  type: 'text' | 'click' | 'date' | 'select' | 'radio' | 'checkbox' | 'sleep' | 'number' | 'file' =
     'text';
 }

@@ -74,6 +74,14 @@
           aria-describedby="username-help"
         />
       </ng-container>
+      <ng-container *ngSwitchCase="'file'">
+        <input
+          type="file"
+          class="form-control"
+          (change)="uploadFile($event,field)"
+          aria-describedby="username-help"
+        />
+      </ng-container>
       <ng-container *ngSwitchCase="'sleep'">
         <input
           type="number"

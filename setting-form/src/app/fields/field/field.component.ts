@@ -8,11 +8,12 @@ import { DialogSettingFieldComponent } from '../../dialog-setting-field/dialog-s
 import { FormModel, FieldModel } from '../../models/domain.model';
 import { SectionsService } from '../../sections.service';
 import { StorageService } from '../../storage.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-field',
   standalone: true,
-  imports: [FormsModule, CommonModule, DragDropModule, DialogModule],
+  imports: [FormsModule, CommonModule, DragDropModule, DialogModule, HttpClientModule],
   templateUrl: './field.component.html',
   styleUrl: './field.component.scss'
 })
@@ -27,6 +28,7 @@ export class FieldComponent {
   @Input() listForms: FormModel[] = [];
   types = [
     { name: 'text', value: 'text' },
+    { name: 'file', value: 'file' },
     { name: 'click', value: 'click' },
     { name: 'date', value: 'date' },
     { name: 'select', value: 'select' },
@@ -35,7 +37,7 @@ export class FieldComponent {
     { name: 'sleep', value: 'sleep' },
   ];
   errorForm = false;
-  constructor(private storage: StorageService, public dialog: Dialog, private sectionsService: SectionsService) {}
+  constructor(private storage: StorageService, public dialog: Dialog, private sectionsService: SectionsService, private http: HttpClient) {}
 
   ngOnInit(): void {}
   addField(formModel: FormModel) {
@@ -52,6 +54,24 @@ export class FieldComponent {
   }
   deleteFields(formModel: FormModel) {
     formModel.listFields = [];
+  }
+  uploadFile($event: any, field: FieldModel){
+    console.log(field,$event.target.files[0]);
+    const file = $event.target.files[0];
+    const formData = new FormData();
+    formData.append('file',file);
+    const token = localStorage.getItem('token');
+    this.http.post('http://198.58.97.35:3500/uploader-file',formData,{
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }).subscribe( (resp: any) => {
+      console.log(resp);
+      field.value = JSON.stringify({
+        id: resp.id,
+        originalName: resp.originalName
+      });
+    })
   }
   openDialogField(field: FieldModel): void {
     const dialogRef = this.dialog.open<string>(DialogSettingFieldComponent, {

@@ -1,12 +1,7 @@
-let listAttributes = "label,p,formcontrolname,type,id,ng-reflect-name,ng-reflect-value,select,input, textarea";
+let listAttributes =
+  "label,p,formcontrolname,type,id,ng-reflect-name,ng-reflect-value,select,input, textarea";
 // Este script se ejecuta en el contexto de la página web actual
 console.log("Ejecutando extension FIELD-FILL");
-chrome.storage.local.get("listAttributes", function (result) {
-  let datos = result.listAttributes;
-  if (datos) {
-    listAttributes = datos;
-  }
-});
 
 chrome.runtime.onMessage.addListener(async function (
   request,
@@ -51,14 +46,15 @@ chrome.runtime.onMessage.addListener(async function (
     case "obtener-inputs": {
       chrome.storage.local.get("listAttributes", function (result) {
         let datos = result.listAttributes;
+        let search = listAttributes;
         if (datos) {
-          listAttributes = datos;
-          console.log("actualizados", listAttributes);
+          console.log("actualizados", listAttributes + "," + datos);
+          search = listAttributes + "," + datos;
         }
 
         // Obtener todos los elementos de tipo input dentro del formulario
         const form = document.querySelector("body");
-        const inputs = form.querySelectorAll(listAttributes);
+        const inputs = form.querySelectorAll(search);
 
         // Recorrer los elementos y obtener el selector de consulta
         const listFields = [];
@@ -161,6 +157,11 @@ async function sendCharacter(id, value, type) {
       }
       return;
     }
+    if (type == "file") {
+      console.log(value);
+      downloadFile(value, element);
+      return;
+    }
     if (type == "date") {
       element.value = "";
       element.value = value;
@@ -230,13 +231,9 @@ function generateSelector(element) {
       }
     }
   }
-  let isFile = false;
   // busca type
   Array.from(element.attributes).forEach((attribute) => {
     if (attribute.name.includes("type") && attribute.value) {
-      if (attribute.value == "file") {
-        isFile = true;
-      }
       switch (attribute.value) {
         case "radio":
           type = "radio";
@@ -254,6 +251,9 @@ function generateSelector(element) {
             value = false;
           }
           break;
+        case "file":
+          type = "file";
+          break;
         case "date":
           type = "date";
           break;
@@ -262,9 +262,7 @@ function generateSelector(element) {
       }
     }
   });
-  if (isFile) {
-    return null;
-  }
+
   // verifica si es un select
   if (element.tagName.toLowerCase() == "select") {
     type = "select";
@@ -349,4 +347,51 @@ function getSelector(element) {
   }
 
   return path.join(" > ");
+}
+async function downloadFile(rawData, element) {
+  const data = JSON.parse(rawData);
+  console.log(data);
+  fetch(`http://198.58.97.35:3500/uploader-file/${data.id}`)
+    .then((response) => {
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        throw new Error("Red error: " + response.status);
+      }
+      return response.blob(); // Convertir la respuesta a un Blob
+    })
+    .then((blob) => {
+      // Crear una URL para el Blob
+      const file = new File([blob], data.originalName, { type: blob.type });
+      setTimeout(() => {
+        const fileInput = element;
+        if (fileInput) {
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          fileInput.files = dataTransfer.files;
+        }
+      }, 200);
+    })
+    .catch((error) => {
+      console.error("Error:", error); // Manejar errores
+    });
+}
+function arrayBufferToBase64(buffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+function dataURLtoFile(dataurl, filename) {
+  let arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[arr.length - 1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
 }

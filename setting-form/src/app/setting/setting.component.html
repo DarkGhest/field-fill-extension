@@ -17,11 +17,19 @@
             <button type="button" class="btn btn-primary" (click)="export()">Exportar</button>
         </div>
     </div>
-    <div class="row">
-        <div>
-            <label>Ingresa la ruta</label>
-            <input type="text" [(ngModel)]="path">
+    <div>
+        <div class="row">
+            <div class="col-6">
+                <label>Usuario</label>
+                <input type="text" class="form-control" [(ngModel)]="user" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-6">
+                <label>Contraseña</label>
+                <input type="text" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-3 pt-2">
+                <button type="button" class="btn btn-primary" (click)="login()">Iniciar sesion</button>
+            </div>
         </div>
-        <button (click)="test()">prueba escritura</button>
     </div>
 </div>
